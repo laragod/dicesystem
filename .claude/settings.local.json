@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(if [ -f \"composer.json\" ])",
+      "Bash(then cat composer.json)",
+      "Bash(else echo \"No composer.json found\")",
+      "Bash(fi)",
+      "Bash(if [ -f \"phpunit.xml\" ])",
+      "Bash(then echo \"PHPUnit config exists\")",
+      "Bash(else echo \"No phpunit.xml found\")",
+      "Bash(if [ -f \"phpstan.neon\" ])",
+      "Bash([ -f \"phpstan.neon.dist\" ])",
+      "Bash(then echo \"PHPStan config exists\")",
+      "Bash(else echo \"No PHPStan config found\")",
+      "Bash(composer install:*)",
+      "Bash(dir:*)",
+      "Bash(composer test:*)",
+      "Bash(php vendor/bin/phpunit:*)",
+      "Bash(cmd.exe /c \"php vendor/bin/phpunit tests/Unit/Core/Random/Mt19937EngineTest.php\")",
+      "Bash(php:*)",
+      "Bash(\"/c/Users/filip/.config/herd/bin/php.exe\" --version)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

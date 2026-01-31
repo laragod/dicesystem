@@ -1,0 +1,240 @@
+{
+  "project": "PHP Dice System Library",
+  "branchName": "ralph/dice-library-foundation",
+  "description": "A professional, extensible PHP 8.4 library for dice rolling in game applications with seeded randomness, comprehensive type safety, and statistical analysis capabilities.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Project Foundation & Setup",
+      "description": "As a developer, I want a properly configured PHP library structure so that I can start development with modern tooling.",
+      "acceptanceCriteria": [
+        "composer.json with PHP ^8.4 requirement configured",
+        "PSR-4 autoloading configured for src/ and tests/",
+        "PHPUnit 11.x installed and configured",
+        "PHPStan level 9 configured for strict type checking",
+        "Directory structure: src/, tests/, docs/, examples/",
+        ".gitignore configured for vendor/, .phpunit.cache/",
+        "README.md with project description and basic installation",
+        "Typecheck passes (phpstan analyze)",
+        "Initial test suite runs successfully"
+      ],
+      "priority": 1,
+      "passes": false
+    },
+    {
+      "id": "US-002",
+      "title": "Seeded Random Number Generator",
+      "description": "As a developer, I want a seedable RNG engine so that I can reproduce and debug dice rolls consistently.",
+      "acceptanceCriteria": [
+        "RandomEngine interface with seed(), next(), and reset() methods",
+        "Mt19937Engine implementation (Mersenne Twister) with custom seed",
+        "Seed can be set via constructor or setSeed() method",
+        "Same seed produces identical sequence of numbers",
+        "getSeed() method returns current seed for debugging",
+        "Full type declarations on all methods and properties",
+        "Unit tests verify deterministic behavior",
+        "Unit tests verify different seeds produce different sequences",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false
+    },
+    {
+      "id": "US-003",
+      "title": "Core Die Class",
+      "description": "As a developer, I want a Die class representing a single die so that I can build complex rolling systems.",
+      "acceptanceCriteria": [
+        "Die class with sides property (minimum 2 sides)",
+        "roll() method using injected RandomEngine",
+        "Returns DieResult value object with value, timestamp, seed info",
+        "Supports standard dice (d4, d6, d8, d10, d12, d20, d100)",
+        "Immutable after construction",
+        "Full type declarations including readonly properties",
+        "Unit tests cover all standard die types",
+        "Unit tests verify roll results are within valid range",
+        "Unit tests verify seeded rolls are deterministic",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": false
+    },
+    {
+      "id": "US-004",
+      "title": "Dice Notation Parser",
+      "description": "As a developer, I want to parse standard dice notation so that I can support user-friendly input like '2d6'.",
+      "acceptanceCriteria": [
+        "DiceNotationParser class with parse() method",
+        "Supports XdY format (e.g., '2d6', '1d20', '3d8')",
+        "Returns parsed DiceExpression value object with quantity and sides",
+        "Validates notation format and throws InvalidNotationException",
+        "Extensible architecture for future notation modifiers",
+        "Full type declarations with strict types enabled",
+        "Unit tests cover valid notation parsing",
+        "Unit tests cover invalid notation error handling",
+        "Unit tests verify edge cases (1d1, 100d100)",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": false
+    },
+    {
+      "id": "US-005",
+      "title": "Dice Roller with Notation Support",
+      "description": "As a user, I want to roll dice using notation strings so that I can easily perform game rolls.",
+      "acceptanceCriteria": [
+        "DiceRoller class with roll(string $notation) method",
+        "Uses DiceNotationParser to parse notation",
+        "Returns RollResult containing individual die results and total",
+        "Accepts optional RandomEngine for custom seeding",
+        "Defaults to system-random engine if none provided",
+        "RollResult includes metadata (notation, timestamp, seed)",
+        "Full type declarations on all public APIs",
+        "Unit tests verify correct total calculation",
+        "Unit tests verify individual die results tracked",
+        "Unit tests verify seeded rolls are reproducible",
+        "Typecheck passes"
+      ],
+      "priority": 5,
+      "passes": false
+    },
+    {
+      "id": "US-006",
+      "title": "Result History & Logging System",
+      "description": "As a developer, I want to track all dice rolls so that I can audit and debug random events.",
+      "acceptanceCriteria": [
+        "RollHistory class with add(), getAll(), clear() methods",
+        "Stores complete RollResult objects with timestamps",
+        "getRecent(int $limit) returns N most recent rolls",
+        "filter(callable $predicate) for querying history",
+        "Optional persistence adapter interface for saving history",
+        "Memory-efficient storage (configurable max size)",
+        "Full type declarations including generics where applicable",
+        "Unit tests verify history tracking",
+        "Unit tests verify filtering and querying",
+        "Unit tests verify size limits enforced",
+        "Typecheck passes"
+      ],
+      "priority": 6,
+      "passes": false
+    },
+    {
+      "id": "US-007",
+      "title": "Statistical Analysis",
+      "description": "As a developer, I want statistical analysis of roll results so that I can verify fairness and distributions.",
+      "acceptanceCriteria": [
+        "RollStatistics class with analyze(array $results) method",
+        "Calculates mean, median, mode, standard deviation",
+        "Calculates min, max, range",
+        "distributionMap() returns frequency of each value",
+        "expectedDistribution() compares actual vs theoretical",
+        "chiSquaredTest() for distribution fairness testing",
+        "Full type declarations with proper return types",
+        "Unit tests verify statistical calculations",
+        "Unit tests verify distribution analysis accuracy",
+        "Unit tests verify chi-squared test with known datasets",
+        "Typecheck passes"
+      ],
+      "priority": 7,
+      "passes": false
+    },
+    {
+      "id": "US-008",
+      "title": "Custom Dice Definitions",
+      "description": "As a developer, I want to create custom dice with non-numeric faces so that I can support special game mechanics.",
+      "acceptanceCriteria": [
+        "CustomDie class accepting array of face values (mixed types)",
+        "Supports string faces (e.g., ['red', 'blue', 'green'])",
+        "Supports symbol faces for custom game dice",
+        "roll() returns face value from array using RandomEngine",
+        "Type-safe generics for face value types",
+        "Immutable face definitions",
+        "Full type declarations using template types",
+        "Unit tests verify custom face selection",
+        "Unit tests verify deterministic behavior with seeds",
+        "Unit tests cover various face value types",
+        "Typecheck passes"
+      ],
+      "priority": 8,
+      "passes": false
+    },
+    {
+      "id": "US-009",
+      "title": "Roll Pools & Collections",
+      "description": "As a developer, I want to manage multiple dice rolls as a collection so that I can perform aggregate operations.",
+      "acceptanceCriteria": [
+        "DicePool class managing collection of Die objects",
+        "rollAll() executes all dice and returns PoolResult",
+        "Aggregate methods: sum(), average(), highest(), lowest()",
+        "keep(int $n, 'highest'|'lowest') for advantage mechanics",
+        "reroll(callable $predicate) for conditional rerolls",
+        "Supports mixed die types in single pool",
+        "Full type declarations with collection types",
+        "Unit tests verify pool operations",
+        "Unit tests verify aggregate calculations",
+        "Unit tests verify keep/drop mechanics",
+        "Typecheck passes"
+      ],
+      "priority": 9,
+      "passes": false
+    },
+    {
+      "id": "US-010",
+      "title": "Comprehensive Documentation",
+      "description": "As a library user, I want clear documentation and examples so that I can quickly integrate the library.",
+      "acceptanceCriteria": [
+        "README.md with installation, quick start, features",
+        "docs/basic-usage.md with common examples",
+        "docs/advanced-usage.md with seeding, custom dice, pools",
+        "docs/api-reference.md with all public classes and methods",
+        "examples/ directory with runnable PHP scripts",
+        "Example: basic rolling with notation",
+        "Example: seeded rolls for reproducibility",
+        "Example: custom dice and statistical analysis",
+        "Example: roll pools and advantage mechanics",
+        "All code examples tested and working",
+        "Typecheck passes on example code"
+      ],
+      "priority": 10,
+      "passes": false
+    },
+    {
+      "id": "US-011",
+      "title": "Type Coverage & Quality Gates",
+      "description": "As a maintainer, I want strict type checking enforced so that the public API is bulletproof.",
+      "acceptanceCriteria": [
+        "PHPStan configured to level 9 (strictest)",
+        "All src/ files pass PHPStan with zero errors",
+        "All test files pass PHPStan analysis",
+        "psalm.xml configured for strict mode",
+        "Psalm passes with zero errors",
+        "100% type coverage on public APIs",
+        "strict_types=1 declared in all PHP files",
+        "composer phpstan script configured",
+        "composer psalm script configured",
+        "All checks pass in CI/CD pipeline"
+      ],
+      "priority": 11,
+      "passes": false
+    },
+    {
+      "id": "US-012",
+      "title": "Test Coverage & CI/CD",
+      "description": "As a maintainer, I want automated testing and quality checks so that the library remains reliable.",
+      "acceptanceCriteria": [
+        "GitHub Actions workflow configured",
+        "Runs on PHP 8.4 matrix",
+        "Executes PHPUnit test suite",
+        "Executes PHPStan type checking",
+        "Executes Psalm static analysis",
+        "Code coverage report generated (target: 90%+)",
+        "composer test script runs all tests",
+        "composer test-coverage generates coverage report",
+        "composer quality runs all quality checks",
+        "All CI checks pass on main branch",
+        "Badge in README shows build status"
+      ],
+      "priority": 12,
+      "passes": false
+    }
+  ]
+}
