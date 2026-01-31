@@ -25,3 +25,6 @@ composer.lock
 # Remove Psalm (migrated to PHPStan)
 psalm.xml
 psalm.xml.bak
+
+/.claude/
+/.omc/
