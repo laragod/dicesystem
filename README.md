@@ -33,6 +33,8 @@ Requires **PHP 8.4** or higher.
 
 ## Quick Start
 
+Get rolling in seconds:
+
 ```php
 <?php
 require 'vendor/autoload.php';
@@ -40,14 +42,144 @@ require 'vendor/autoload.php';
 use Laragod\DiceSystem\Core\Dice\DiceRoller;
 
 $roller = new DiceRoller();
-
-// Roll 2d6 and get results
 $result = $roller->roll('2d6');
 
-echo $result; // Output: "2d6: [3, 5] = 8"
 echo $result->total; // 8
+```
+
+## Usage Examples
+
+### Basic Rolling
+
+Roll any standard dice notation with automatic parsing:
+
+```php
+use Laragod\DiceSystem\Core\Dice\DiceRoller;
+
+$roller = new DiceRoller();
+
+$result = $roller->roll('2d6');      // Roll 2 six-sided dice
+$result = $roller->roll('1d20');     // D&D attack roll
+$result = $roller->roll('4d6');      // 4 six-sided dice
+$result = $roller->roll('3d8');      // 3 eight-sided dice
+
+echo $result->total;    // Sum of all dice
+echo $result->rolls;    // Array: [3, 5]
 echo $result->notation; // "2d6"
 ```
+
+### Seeded Rolls (Reproducible Testing)
+
+Generate identical sequences for deterministic testing:
+
+```php
+use Laragod\DiceSystem\Core\Dice\DiceRoller;
+use Laragod\DiceSystem\Core\Random\Mt19937Engine;
+
+$engine = new Mt19937Engine(seed: 12345);
+$roller = new DiceRoller($engine);
+
+$result1 = $roller->roll('2d6'); // Always: [3, 5] = 8
+$engine->reset();                // Reset to initial seed
+$result2 = $roller->roll('2d6'); // Same: [3, 5] = 8
+```
+
+### Custom Dice (Non-Numeric Faces)
+
+Create dice with custom values like cards, attributes, or strings:
+
+```php
+use Laragod\DiceSystem\Core\Dice\CustomDie;
+use Laragod\DiceSystem\Core\Random\Mt19937Engine;
+
+$engine = new Mt19937Engine(seed: 42);
+$die = new CustomDie(['rock', 'paper', 'scissors'], $engine);
+
+$result = $die->roll();
+echo $result->value; // "paper"
+```
+
+### Dice Pools (Advantage/Disadvantage)
+
+Manage collections of dice with aggregate operations:
+
+```php
+use Laragod\DiceSystem\Core\Dice\{DicePool, Die};
+use Laragod\DiceSystem\Core\Random\Mt19937Engine;
+
+$engine = new Mt19937Engine(seed: 100);
+$pool = new DicePool([new Die(20), new Die(20)], $engine);
+
+// D&D 5e Advantage: roll 2d20, keep highest
+$result = $pool->keep(1, 'highest');
+echo $result->total; // 18
+
+// Disadvantage: roll 2d20, keep lowest
+$result = $pool->keep(1, 'lowest');
+echo $result->total; // 12
+
+// Reroll dice under threshold
+$result = $pool->reroll(fn($die) => $die->value < 5);
+```
+
+### Statistical Analysis
+
+Analyze roll distributions for game balancing and fairness:
+
+```php
+use Laragod\DiceSystem\Core\Statistics\RollStatistics;
+
+$stats = new RollStatistics();
+$analysis = $stats->analyze([3, 5, 6, 2, 6, 4]);
+
+echo $analysis->mean;              // 4.33
+echo $analysis->median;            // 4.5
+echo $analysis->mode;              // 6
+echo $analysis->standardDeviation; // ~1.56
+echo $analysis->min;               // 2
+echo $analysis->max;               // 6
+
+// Check die fairness with chi-squared test
+$observed = [1 => 8, 2 => 12, 3 => 10];
+$expected = [1 => 10, 2 => 10, 3 => 10];
+$chiSquared = $stats->chiSquaredTest($observed, $expected);
+```
+
+### Roll History Tracking
+
+Track and query previous rolls:
+
+```php
+use Laragod\DiceSystem\Core\History\RollHistory;
+use Laragod\DiceSystem\Core\Dice\DiceRoller;
+
+$history = new RollHistory(maxSize: 100);
+$roller = new DiceRoller();
+
+$result = $roller->roll('2d6');
+$history->add($result);
+
+// Get 10 most recent rolls
+$recent = $history->getRecent(10);
+
+// Filter rolls by criteria
+$d20Rolls = $history->filter(fn($r) => $r->notation === '1d20');
+$highRolls = $history->filter(fn($r) => $r->total >= 10);
+```
+
+## Common Use Cases
+
+**Game Development**
+Perfect for RPGs, board games, roguelikes, and simulations. Use seeded rolls for reproducible procedural generation and dice pools for complex mechanics like D&D advantage/disadvantage.
+
+**Testing**
+Seeded rolls ensure reproducible test scenarios. Test game balance, verify statistical distributions, and debug randomness issues without flakiness.
+
+**Statistics**
+Analyze fairness of custom dice mechanics. Use chi-squared testing to verify dice balance and distribution curves to visualize randomness patterns.
+
+**Web Applications**
+Integrate into Laravel apps, Symfony projects, or any PHP framework. Works in CLI tools, HTTP endpoints, and background jobs.
 
 ## Documentation
 
