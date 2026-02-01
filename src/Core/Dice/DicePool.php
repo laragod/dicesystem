@@ -32,7 +32,7 @@ final class DicePool
      *
      * @param Die $die The die to add
      */
-    public function add(Die $die): void
+    public function add(DieRoll $die): void
     {
         $this->dice[] = $die;
     }

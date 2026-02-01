@@ -7,7 +7,7 @@ namespace Laragod\DiceSystem\Tests\Unit\Core\Dice;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use Laragod\DiceSystem\Core\Contract\RandomEngineInterface;
-use Laragod\DiceSystem\Core\Dice\Die;
+use Laragod\DiceSystem\Core\Dice\DieRoll;
 use Laragod\DiceSystem\Core\Dice\DicePool;
 use Laragod\DiceSystem\Core\Dice\DieResult;
 use Laragod\DiceSystem\Core\Dice\PoolResult;
@@ -37,9 +37,9 @@ class DicePoolTest extends TestCase
         $this->engine->method('getSeed')->willReturn(12345);
 
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -57,9 +57,9 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(3, 5, 2);
 
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -74,9 +74,9 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(2, 4, 6);
 
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -91,10 +91,10 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(3, 5, 2, 6);
 
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -113,10 +113,10 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(3, 5, 2, 6);
 
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -136,8 +136,8 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(12, 17);
 
         $dice = [
-            new Die(20, $this->engine),
-            new Die(20, $this->engine),
+            new DieRoll(20, $this->engine),
+            new DieRoll(20, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -154,8 +154,8 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(12, 17);
 
         $dice = [
-            new Die(20, $this->engine),
-            new Die(20, $this->engine),
+            new DieRoll(20, $this->engine),
+            new DieRoll(20, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -167,7 +167,7 @@ class DicePoolTest extends TestCase
 
     public function test_keep_invalid_mode_throws_exception(): void
     {
-        $dice = [new Die(6, $this->engine)];
+        $dice = [new DieRoll(6, $this->engine)];
         $pool = new DicePool($dice, $this->engine);
 
         $this->expectException(InvalidArgumentException::class);
@@ -183,10 +183,10 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(4, 5, 3, 7);
 
         $dice = [
-            new Die(6, $this->engine),  // 4
-            new Die(6, $this->engine),  // 5
-            new Die(4, $this->engine),  // 3
-            new Die(8, $this->engine),  // 7
+            new DieRoll(6, $this->engine),  // 4
+            new DieRoll(6, $this->engine),  // 5
+            new DieRoll(4, $this->engine),  // 3
+            new DieRoll(8, $this->engine),  // 7
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -208,9 +208,9 @@ class DicePoolTest extends TestCase
             );
 
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -230,15 +230,15 @@ class DicePoolTest extends TestCase
         $engine2->method('getSeed')->willReturn(42);
 
         $dice1 = [
-            new Die(6, $engine1),
-            new Die(6, $engine1),
-            new Die(6, $engine1),
+            new DieRoll(6, $engine1),
+            new DieRoll(6, $engine1),
+            new DieRoll(6, $engine1),
         ];
 
         $dice2 = [
-            new Die(6, $engine2),
-            new Die(6, $engine2),
-            new Die(6, $engine2),
+            new DieRoll(6, $engine2),
+            new DieRoll(6, $engine2),
+            new DieRoll(6, $engine2),
         ];
 
         $pool1 = new DicePool($dice1, $engine1);
@@ -253,25 +253,25 @@ class DicePoolTest extends TestCase
 
     public function test_adding_dice_to_pool(): void
     {
-        $dice = [new Die(6, $this->engine)];
+        $dice = [new DieRoll(6, $this->engine)];
         $pool = new DicePool($dice, $this->engine);
 
         $this->assertSame(1, $pool->count());
 
-        $pool->add(new Die(6, $this->engine));
+        $pool->add(new DieRoll(6, $this->engine));
         $this->assertSame(2, $pool->count());
 
-        $pool->add(new Die(8, $this->engine));
+        $pool->add(new DieRoll(8, $this->engine));
         $this->assertSame(3, $pool->count());
     }
 
     public function test_count_returns_number_of_dice(): void
     {
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);
@@ -297,9 +297,9 @@ class DicePoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(2, 4, 6);
 
         $dice = [
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
-            new Die(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
+            new DieRoll(6, $this->engine),
         ];
 
         $pool = new DicePool($dice, $this->engine);

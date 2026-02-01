@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laragod\DiceSystem\Tests\Unit\Core\Dice;
 
 use DateTimeImmutable;
-use Laragod\DiceSystem\Core\Dice\Die;
+use Laragod\DiceSystem\Core\Dice\DieRoll;
 use Laragod\DiceSystem\Core\Dice\DieResult;
 use Laragod\DiceSystem\Core\Exception\InvalidDieException;
 use Laragod\DiceSystem\Core\Random\Mt19937Engine;
@@ -18,7 +18,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(12345);
 
-        $die = new Die(4, $engine);
+        $die = new DieRoll(4, $engine);
 
         $this->assertSame(4, $die->sides);
 
@@ -34,7 +34,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(12345);
 
-        $die = new Die(6, $engine);
+        $die = new DieRoll(6, $engine);
 
         $this->assertSame(6, $die->sides);
 
@@ -49,7 +49,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(12345);
 
-        $die = new Die(8, $engine);
+        $die = new DieRoll(8, $engine);
 
         $this->assertSame(8, $die->sides);
 
@@ -64,7 +64,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(12345);
 
-        $die = new Die(10, $engine);
+        $die = new DieRoll(10, $engine);
 
         $this->assertSame(10, $die->sides);
 
@@ -79,7 +79,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(12345);
 
-        $die = new Die(12, $engine);
+        $die = new DieRoll(12, $engine);
 
         $this->assertSame(12, $die->sides);
 
@@ -94,7 +94,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(12345);
 
-        $die = new Die(20, $engine);
+        $die = new DieRoll(20, $engine);
 
         $this->assertSame(20, $die->sides);
 
@@ -109,7 +109,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(12345);
 
-        $die = new Die(100, $engine);
+        $die = new DieRoll(100, $engine);
 
         $this->assertSame(100, $die->sides);
 
@@ -124,7 +124,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(99999);
 
-        $die = new Die(6, $engine);
+        $die = new DieRoll(6, $engine);
 
         // Roll multiple times to verify range
         for ($i = 0; $i < 100; $i++) {
@@ -139,7 +139,7 @@ class DieTest extends TestCase
         $engine1 = new Mt19937Engine();
         $engine1->setSeed(42);
 
-        $die1 = new Die(20, $engine1);
+        $die1 = new DieRoll(20, $engine1);
         $results1 = [];
         for ($i = 0; $i < 10; $i++) {
             $results1[] = $die1->roll()->value;
@@ -149,7 +149,7 @@ class DieTest extends TestCase
         $engine2 = new Mt19937Engine();
         $engine2->setSeed(42);
 
-        $die2 = new Die(20, $engine2);
+        $die2 = new DieRoll(20, $engine2);
         $results2 = [];
         for ($i = 0; $i < 10; $i++) {
             $results2[] = $die2->roll()->value;
@@ -164,11 +164,11 @@ class DieTest extends TestCase
 
         $engine6 = new Mt19937Engine();
         $engine6->setSeed($seed);
-        $die6 = new Die(6, $engine6);
+        $die6 = new DieRoll(6, $engine6);
 
         $engine20 = new Mt19937Engine();
         $engine20->setSeed($seed);
-        $die20 = new Die(20, $engine20);
+        $die20 = new DieRoll(20, $engine20);
 
         // Roll both dice
         $result6 = $die6->roll();
@@ -192,7 +192,7 @@ class DieTest extends TestCase
         $this->expectExceptionMessage('Die must have at least 2 sides, got 1');
 
         $engine = new Mt19937Engine();
-        new Die(1, $engine);
+        new DieRoll(1, $engine);
     }
 
     public function testNegativeSidesThrowsException(): void
@@ -201,7 +201,7 @@ class DieTest extends TestCase
         $this->expectExceptionMessage('Die must have at least 2 sides, got -5');
 
         $engine = new Mt19937Engine();
-        new Die(-5, $engine);
+        new DieRoll(-5, $engine);
     }
 
     public function testZeroSidesThrowsException(): void
@@ -210,7 +210,7 @@ class DieTest extends TestCase
         $this->expectExceptionMessage('Die must have at least 2 sides, got 0');
 
         $engine = new Mt19937Engine();
-        new Die(0, $engine);
+        new DieRoll(0, $engine);
     }
 
     public function testDieIsImmutableAfterConstruction(): void
@@ -218,7 +218,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(1234);
 
-        $die = new Die(6, $engine);
+        $die = new DieRoll(6, $engine);
 
         // sides is readonly
         $this->assertSame(6, $die->sides);
@@ -234,7 +234,7 @@ class DieTest extends TestCase
         $seed = 54321;
         $engine->setSeed($seed);
 
-        $die = new Die(12, $engine);
+        $die = new DieRoll(12, $engine);
 
         $beforeRoll = new DateTimeImmutable();
         $result = $die->roll();
@@ -262,7 +262,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         $engine->setSeed(999);
 
-        $die = new Die(6, $engine);
+        $die = new DieRoll(6, $engine);
         $result = $die->roll();
 
         // Properties are readonly - this should be enforced by PHP's type system
@@ -278,7 +278,7 @@ class DieTest extends TestCase
         $engine->setSeed(100);
 
         // 2 sides should be valid (like a coin)
-        $die = new Die(2, $engine);
+        $die = new DieRoll(2, $engine);
         $this->assertSame(2, $die->sides);
 
         $result = $die->roll();
@@ -290,7 +290,7 @@ class DieTest extends TestCase
         $engine = new Mt19937Engine();
         // Don't set seed
 
-        $die = new Die(6, $engine);
+        $die = new DieRoll(6, $engine);
         $result = $die->roll();
 
         $this->assertNull($result->seed);

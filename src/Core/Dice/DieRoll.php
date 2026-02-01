@@ -12,7 +12,7 @@ use Laragod\DiceSystem\Core\Exception\InvalidDieException;
  * Die represents a single die with a specific number of sides.
  * It uses a RandomEngineInterface to generate random values.
  */
-final class Die
+final class DieRoll
 {
     /**
      * @param int $sides The number of sides on the die (minimum 2)

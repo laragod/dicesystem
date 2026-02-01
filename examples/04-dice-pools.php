@@ -9,7 +9,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Laragod\DiceSystem\Core\Dice\Die;
+use Laragod\DiceSystem\Core\Dice\DieRoll;
 use Laragod\DiceSystem\Core\Dice\DicePool;
 use Laragod\DiceSystem\Core\Random\SystemRandomEngine;
 use Laragod\DiceSystem\Core\Random\Mt19937Engine;
@@ -24,9 +24,9 @@ $engine = new SystemRandomEngine();
 
 // Create 3d6
 $dice = [
-    new Die(6, $engine),
-    new Die(6, $engine),
-    new Die(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
 ];
 
 $pool = new DicePool($dice, $engine);
@@ -42,8 +42,8 @@ echo "--------------------------------------\n";
 
 $engine = new SystemRandomEngine();
 $d20Dice = [
-    new Die(20, $engine),
-    new Die(20, $engine),
+    new DieRoll(20, $engine),
+    new DieRoll(20, $engine),
 ];
 
 $pool = new DicePool($d20Dice, $engine);
@@ -64,7 +64,7 @@ $stats = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Ch
 foreach ($stats as $stat) {
     $dice = [];
     for ($i = 0; $i < 4; $i++) {
-        $dice[] = new Die(6, $engine);
+        $dice[] = new DieRoll(6, $engine);
     }
 
     $pool = new DicePool($dice, $engine);
@@ -80,9 +80,9 @@ echo "---------------------\n";
 
 $engine = new SystemRandomEngine();
 $dice = [
-    new Die(20, $engine),
-    new Die(20, $engine),
-    new Die(20, $engine),
+    new DieRoll(20, $engine),
+    new DieRoll(20, $engine),
+    new DieRoll(20, $engine),
 ];
 
 $pool = new DicePool($dice, $engine);
@@ -101,9 +101,9 @@ echo "-------------------\n";
 
 $engine = new SystemRandomEngine();
 $dice = [
-    new Die(6, $engine),
-    new Die(6, $engine),
-    new Die(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
 ];
 
 $pool = new DicePool($dice, $engine);
@@ -120,8 +120,8 @@ echo "------------------------\n";
 
 $engine = new SystemRandomEngine();
 $dice = [
-    new Die(6, $engine),
-    new Die(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
 ];
 
 $pool = new DicePool($dice, $engine);
@@ -138,9 +138,9 @@ echo "------------------------------\n";
 
 $engine = new SystemRandomEngine();
 $dice = [
-    new Die(6, $engine),
-    new Die(6, $engine),
-    new Die(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
 ];
 
 $pool = new DicePool($dice, $engine);
@@ -154,12 +154,12 @@ echo "Example 8: Building pool dynamically\n";
 echo "-----------------------------------\n";
 
 $engine = new SystemRandomEngine();
-$pool = new DicePool([new Die(6, $engine)], $engine);
+$pool = new DicePool([new DieRoll(6, $engine)], $engine);
 
 echo "Starting with 1d6\n";
 
 for ($i = 2; $i <= 5; $i++) {
-    $pool->add(new Die(6, $engine));
+    $pool->add(new DieRoll(6, $engine));
     $result = $pool->rollAll();
     echo "After adding die: {$i}d6 -> Sum: " . $result->sum() . "\n";
 }
@@ -173,9 +173,9 @@ $engine = new Mt19937Engine();
 $engine->setSeed(999);
 
 $dice = [
-    new Die(6, $engine),
-    new Die(6, $engine),
-    new Die(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
+    new DieRoll(6, $engine),
 ];
 
 $pool = new DicePool($dice, $engine);
@@ -195,7 +195,7 @@ echo "---------------------------------------\n";
 $engine = new SystemRandomEngine();
 $dice = [];
 for ($i = 0; $i < 5; $i++) {
-    $dice[] = new Die(6, $engine);
+    $dice[] = new DieRoll(6, $engine);
 }
 
 $pool = new DicePool($dice, $engine);

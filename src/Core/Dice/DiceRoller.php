@@ -42,7 +42,7 @@ final class DiceRoller
         // Create individual dice and roll them
         $results = [];
         for ($i = 0; $i < $expression->quantity; $i++) {
-            $die = new Die($expression->sides, $this->engine);
+            $die = new DieRoll($expression->sides, $this->engine);
             $results[] = $die->roll();
         }
 

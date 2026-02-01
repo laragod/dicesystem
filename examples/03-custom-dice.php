@@ -9,7 +9,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Laragod\DiceSystem\Core\Dice\CustomDie;
+use Laragod\DiceSystem\Core\Dice\CustomDieRoll;
 use Laragod\DiceSystem\Core\Random\SystemRandomEngine;
 use Laragod\DiceSystem\Core\Random\Mt19937Engine;
 
