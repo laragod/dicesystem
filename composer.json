@@ -47,7 +47,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Laragod\\DiceSystem\\Laragod\\DiceSystemServiceProvider"
+        "Laragod\\DiceSystem\\Laravel\\DiceSystemServiceProvider"
       ]
     }
   },
